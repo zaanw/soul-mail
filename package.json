@@ -20,7 +20,8 @@
     "preview:cloudflare": "node scripts/cloudflare-preview.mjs",
     "deploy:cloudflare": "node --use-env-proxy scripts/cloudflare-deploy.mjs",
     "check:cloudflare": "wrangler deploy --dry-run --outdir .local/worker-dry-run",
-    "test:cloudflare": "node scripts/cloudflare-test.mjs"
+    "test:cloudflare": "node scripts/cloudflare-test.mjs",
+    "deploy:pages": "wrangler pages deploy --cwd cloudflare/pages --project-name soul --branch main"
   },
   "dependencies": {
     "@noble/hashes": "2.4.0",

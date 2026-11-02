@@ -3,6 +3,7 @@ export default defineConfig({
   test: {
     include: [
       "tests/unit.test.ts",
+      "tests/pages-gateway.test.ts",
       "tests/password.test.ts",
       "tests/transport.test.ts",
     ],
