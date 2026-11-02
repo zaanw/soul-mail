@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+}
+model User {
+  id String @id @default(cuid())
+  handle String @unique
+  email String @unique
+  name String
+  passwordHash String
+  recoveryEmail String? @unique
+  verifiedAt DateTime?
+  role String @default("USER")
+  disabled Boolean @default(false)
+  theme String @default("dark")
+  signature String @default("")
+  notifications Boolean @default(false)
+  avatar Bytes?
+  avatarType String?
+  createdAt DateTime @default(now())
+  sessions Session[]
+  entries Entry[]
+  attachments Attachment[]
+  tokens ActionToken[]
+  domains Domain[]
+  reports Report[]
+}
+model Session {
+  id String @id @default(cuid())
+  tokenHash String @unique
+  userId String
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  agent String
+  @@index([userId])
+}
+model ActionToken {
+  id String @id @default(cuid())
+  hash String @unique
+  kind String
+  userId String
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  expiresAt DateTime
+}
+model Message {
+  id String @id @default(cuid())
+  sender String
+  senderName String
+  to String[]
+  cc String[]
+  subject String
+  body String
+  createdAt DateTime @default(now())
+  entries Entry[]
+  attachments Attachment[]
+  deliveries Delivery[]
+}
+model Entry {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  messageId String
+  message Message @relation(fields:[messageId],references:[id],onDelete:Cascade)
+  folder String
+  read Boolean @default(false)
+  starred Boolean @default(false)
+  updatedAt DateTime @updatedAt
+  @@index([userId,folder])
+  @@unique([userId,messageId,folder])
+}
+model Attachment {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  messageId String?
+  message Message? @relation(fields:[messageId],references:[id],onDelete:Cascade)
+  name String
+  type String
+  size Int
+  data Bytes
+  createdAt DateTime @default(now())
+}
+model Delivery {
+  id String @id @default(cuid())
+  messageId String
+  message Message @relation(fields:[messageId],references:[id],onDelete:Cascade)
+  recipient String
+  status String
+  code String?
+  updatedAt DateTime @updatedAt
+}
+model Domain {
+  id String @id @default(cuid())
+  name String @unique
+  userId String
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  token String
+  verifiedAt DateTime?
+  createdAt DateTime @default(now())
+}
+model Report {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  category String
+  detail String
+  status String @default("OPEN")
+  createdAt DateTime @default(now())
+}
+model RateLimit {
+  key String @id
+  count Int
+  resetAt DateTime
+}
+model InboundEvent {
+  id String @id
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,10 @@
+APP_URL=http://localhost:8787
+MAIL_DOMAIN=localhost
+# Local preview only: use your existing local PostgreSQL connection.
+DATABASE_URL=postgresql://soul:CHANGE_ME@localhost:5432/soul
+# Optional HTTP email provider (required for external delivery on Workers).
+RESEND_API_KEY=
+SMTP_FROM=
+INBOUND_TOKEN=
+REQUIRE_EMAIL_VERIFICATION=false
+ADMIN_EMAILS=

@@ -1,0 +1,64 @@
+{
+  "name": "soul-mail",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build --webpack",
+    "start": "next start --hostname 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "db:generate": "node scripts/prisma-local.mjs generate",
+    "db:migrate": "node scripts/prisma-local.mjs migrate",
+    "db:dev": "prisma migrate dev",
+    "format": "prettier --write 'src/**/*.{ts,tsx,css}' 'tests/**/*.ts' 'scripts/*.mjs' '*.ts' '*.mjs' '*.json' '*.md' '*.yaml'",
+    "build:cloudflare": "npm run db:generate && opennextjs-cloudflare build",
+    "preview:cloudflare": "node scripts/cloudflare-preview.mjs",
+    "deploy:cloudflare": "node --use-env-proxy scripts/cloudflare-deploy.mjs",
+    "check:cloudflare": "wrangler deploy --dry-run --outdir .local/worker-dry-run",
+    "test:cloudflare": "node scripts/cloudflare-test.mjs"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.4.0",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "lucide-react": "^0.577.0",
+    "next": "16.4.4",
+    "nodemailer": "10.3.1",
+    "pg": "^8.16.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "1.20.15",
+    "@playwright/test": "^1.58.2",
+    "@prisma/client-generator-js": "7.10.1",
+    "@prisma/driver-adapter-utils": "7.10.1",
+    "@prisma/internals": "7.10.1",
+    "@prisma/schema-engine-wasm": "8.1.0-1.d1b3f377ca835d73fd50954a5e22128b9ebdd6b8",
+    "@tailwindcss/postcss": "^4.2.0",
+    "@types/node": "^24.10.0",
+    "@types/nodemailer": "8.0.2",
+    "@types/pg": "^8.15.6",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "dotenv": "^17.3.1",
+    "jsonc-parser": "3.3.1",
+    "prettier": "3.8.3",
+    "prisma": "7.10.1",
+    "tailwindcss": "^4.2.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18",
+    "wrangler": "4.156.1"
+  },
+  "type": "module",
+  "overrides": {
+    "glob": "14.0.3",
+    "minimatch": "11.0.4"
+  }
+}
